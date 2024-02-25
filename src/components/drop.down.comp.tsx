@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHasFocus, useTrackFocus } from "../hooks";
@@ -28,8 +27,9 @@ export const DropDown = () => {
   // Component state
   const [search, setSearch] = useState<string>("");
   const [selected, setSelected] = useState<ICharacter[]>([]);
-  const [isDropOpened, setIsDropOpened] = useState<boolean>(false);
+  const [isDropOpened, setIsDropOpened] = useState<boolean>(true);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Computed properties
   // hasFocus is used to determine if the drop down should be opened (Hovering or clicking inside of the drop down)
@@ -51,7 +51,7 @@ export const DropDown = () => {
   // Handle selection of characters
   const onSelectionChanged = (e: { id: string; add: boolean }) => {
     if (e.add) {
-      setSelected([...selected, chars.find((char) => char.id === e.id)!]);
+      setSelected([chars.find((char) => char.id === e.id)!, ...selected]);
     } else {
       setSelected(selected.filter((char) => char.id !== e.id));
     }
@@ -71,6 +71,10 @@ export const DropDown = () => {
   useEffect(() => {
     // Throttle the search to prevent too many requests
     throttled(search);
+    scrollRef.current?.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [search]);
 
   // Close the drop down when the window is blurred
@@ -143,7 +147,10 @@ export const DropDown = () => {
         dropDownIsActive={isDropOpened}
       />
       <LoaderLine hidden={!isLoading} />
-      <motion.div className={[css.drop_down_wrapper, dropDownCss].join(" ")}>
+      <div
+        ref={scrollRef}
+        className={[css.drop_down_wrapper, dropDownCss].join(" ")}
+      >
         {error || !hasData ? (
           <DataFetchingErrorComp
             isLoading={isLoading}
@@ -165,7 +172,7 @@ export const DropDown = () => {
         )}
         {isFetchingMore && <SimpleSpinner />}
         <div className="h-10" ref={obsRef}></div>
-      </motion.div>
+      </div>
     </div>
   );
 };

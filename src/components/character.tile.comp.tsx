@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { forwardRef, useEffect, useRef, useState } from "react";
 //@ts-ignore
 import SanitizedHTML from "react-sanitized-html";
+import { TRANSITION_CONSTANTS } from "../constants";
 import { highlightSearch } from "../logic/utils";
 import { ICharacter } from "../types";
 import css from "./character.tile.module.scss";
@@ -50,7 +51,9 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
             open={fullScreen}
           >
             <h1>{character.name}</h1>
-            <img
+            <motion.img
+              initial={{ scale: 0.8, y: -300 }}
+              animate={{ scale: 1, y: 0 }}
               className="h-2/3 object-contain rounded-3xl"
               src={character.image}
               alt={character.name}
@@ -60,12 +63,8 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
         <motion.div
           whileInView={{ scale: 1 }}
           initial={{ scale: 0.8 }}
-          viewport={{ amount: 0.9, once: true }}
-          transition={{
-            duration: 0.8,
-            type: "spring",
-            bounce: 0.4,
-          }}
+          viewport={{ amount: 0.1, once: true }}
+          transition={TRANSITION_CONSTANTS}
           ref={ref}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
