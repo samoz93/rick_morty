@@ -7,6 +7,8 @@
     content: "▼";
     grid-row: 1;
     grid-column: 2;
+    aspect-ratio: 1;
+
     @apply flex justify-center items-center text-ricky;
     transform: rotate(180deg);
     transition: all 0.3s ease-in-out;

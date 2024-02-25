@@ -1,17 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  FC,
-  MutableRefObject,
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 //@ts-ignore
 import SanitizedHTML from "react-sanitized-html";
+import { highlightSearch } from "../logic/utils";
 import { ICharacter } from "../types";
 import css from "./character.tile.module.scss";
-import { highlightSearch } from "../logic/utils";
 
 type CharacterTileProps = {
   character: ICharacter;

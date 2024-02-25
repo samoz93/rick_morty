@@ -36,7 +36,7 @@
 .drop_down_wrapper {
   @apply overflow-scroll border-2 rounded-xl border-ricky transition-all duration-500 ease-in-out;
   &.opened {
-    @apply h-[45vh] opacity-100;
+    @apply h-[50vh] opacity-100;
   }
   &.closed {
     @apply h-0 border-transparent;

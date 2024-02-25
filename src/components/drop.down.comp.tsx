@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHasFocus, useTrackFocus } from "../hooks";
@@ -5,12 +6,11 @@ import { useInfiniteLoader } from "../hooks/loader.hook";
 import { characterService } from "../logic/services";
 import { ICharacter } from "../types";
 import { CharacterTile } from "./character.tile.comp";
+import { DataFetchingErrorComp } from "./data.fetching.error.comp";
 import css from "./dropdown.module.scss";
+import { LoaderLine } from "./loader.line";
 import { SearchInput } from "./search.input.comp";
 import { SimpleSpinner } from "./simple.spinner";
-import { DataFetchingErrorComp } from "./data.fetching.error.comp";
-import { motion } from "framer-motion";
-import { LoaderLine } from "./loader.line";
 
 export const DropDown = () => {
   // Handle infinite scroll data + new search input
@@ -90,14 +90,6 @@ export const DropDown = () => {
   useEffect(() => {
     const obs = new IntersectionObserver(
       async (entries) => {
-        console.log(
-          entries[0].isIntersecting,
-          characterService.nextPage,
-          entries,
-          fetching,
-          "obs"
-        );
-
         if (
           characterService.nextPage &&
           entries[0].isIntersecting &&
