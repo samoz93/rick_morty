@@ -8,11 +8,13 @@ export const SearchInput = ({
   onSearchChanged,
   selectedItems,
   onItemRemoved,
+  onKeyDown,
 }: {
   dropDownIsActive: boolean;
   onSearchChanged: (search: string) => void;
   selectedItems: { id: string; name: string }[];
   onItemRemoved: (id: string) => void;
+  onKeyDown: (search: string) => void;
 }) => {
   const [search, setSearch] = useState<string>("");
 
@@ -29,6 +31,13 @@ export const SearchInput = ({
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          console.log(e.key);
+
+          if (e.key === "Enter") {
+            onKeyDown(search);
+          }
         }}
         placeholder="Search.."
         id="myInput"

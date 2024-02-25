@@ -33,8 +33,8 @@ export const DropDown = () => {
     []
   );
 
-  const onSelectionChanged = (e: { id: string; isSelected: boolean }) => {
-    if (e.isSelected) {
+  const onSelectionChanged = (e: { id: string; add: boolean }) => {
+    if (e.add) {
       setSelected([...selected, chars.find((char) => char.id === e.id)!]);
     } else {
       setSelected(selected.filter((char) => char.id !== e.id));
@@ -75,8 +75,16 @@ export const DropDown = () => {
     <div className={css.section} ref={wrapperRef}>
       <SearchInput
         selectedItems={selected}
+        onKeyDown={() => {
+          if (chars.length < 3 && chars.length > 0) {
+            // Add/Remove first item for convenience
+            const first = chars[0];
+            const isSelected = selected.some((char) => char.id === first.id);
+            onSelectionChanged({ id: first.id, add: !isSelected });
+          }
+        }}
         onItemRemoved={(id) => {
-          setSelected(selected.filter((char) => char.id !== id));
+          onSelectionChanged({ id: id, add: false });
           // Move focus to the next element when deleting using key, minor UX improvement
           moveToNext();
         }}

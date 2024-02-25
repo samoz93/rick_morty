@@ -13,7 +13,7 @@ export const CharacterTile = ({
   search,
 }: {
   character: ICharacter;
-  onCharacterClick?: (character: { id: string; isSelected: boolean }) => void;
+  onCharacterClick?: (character: { id: string; add: boolean }) => void;
   selected?: boolean;
   search?: string;
 }) => {
@@ -27,7 +27,7 @@ export const CharacterTile = ({
   );
 
   const handleClick = () => {
-    onCharacterClick?.({ id: character.id, isSelected: !isSelected });
+    onCharacterClick?.({ id: character.id, add: !isSelected });
     setIsSelected((selected) => !selected);
   };
 
