@@ -1,0 +1,30 @@
+.search {
+  @apply w-full p-2 border-2 rounded-2xl bg-transparent grid justify-center align-middle border-ricky;
+  grid-template-columns: 20fr 1fr;
+  overflow: hidden;
+
+  &::after {
+    content: "▼";
+    grid-row: 1;
+    grid-column: 2;
+    @apply flex justify-center items-center text-ricky;
+    transform: rotate(180deg);
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:hover::after,
+  &.opened::after {
+    transform: rotate(0);
+    transition: all 0.3s ease-in-out;
+  }
+
+  &_chips {
+    @apply flex gap-2 flex-row flex-wrap;
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  input {
+    @apply bg-transparent;
+  }
+}

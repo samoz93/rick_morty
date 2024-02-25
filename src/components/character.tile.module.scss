@@ -1,0 +1,19 @@
+.main {
+  @apply hover:bg-ricky-100/10 flex gap-4 max-h-28 items-center justify-start p-4 border-b-2 border-ricky;
+
+  &:has(.checkbox_input:focus) {
+    @apply bg-ricky-100/10;
+  }
+}
+
+.checkbox {
+  @apply h-8 w-8 border-2 border-ricky rounded-full hover:animate-pulse cursor-pointer relative;
+
+  &_input {
+    @apply h-0 w-0 opacity-0 absolute;
+  }
+}
+
+.title {
+  @apply flex flex-col justify-center text-start;
+}
