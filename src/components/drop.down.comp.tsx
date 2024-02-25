@@ -1,38 +1,51 @@
 import { throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHasFocus, useTrackFocus } from "../hooks";
-import { useLoading } from "../hooks/loader.hook";
+import { useInfiniteLoader } from "../hooks/loader.hook";
 import { characterService } from "../logic/services";
 import { ICharacter } from "../types";
 import { CharacterTile } from "./character.tile.comp";
 import css from "./dropdown.module.scss";
 import { SearchInput } from "./search.input.comp";
-import WaitingComponent from "./waiting.comp";
-import to from "await-to-js";
+import { WaitingComponent } from "./waiting.comp";
 
 export const DropDown = () => {
-  const [chars, setChars] = useState<ICharacter[]>([]);
+  // Handle infinite scroll data + new search input
+  // Fetch will trigger fetching new set of data
+  // Fetch more will append to the current data
+  const {
+    isLoading,
+    isFetchingMore,
+    fetch,
+    fetchMore,
+    data: chars,
+    error,
+  } = useInfiniteLoader<ICharacter>();
+
+  // Component state
   const [search, setSearch] = useState<string>("");
   const [selected, setSelected] = useState<ICharacter[]>([]);
-  const [isDropOpened, setIsDropOpened] = useState<boolean>(false);
-  const [isLoading, error, load] = useLoading();
+  const [isDropOpened, setIsDropOpened] = useState<boolean>(true);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Computed properties
+  // hasFocus is used to determine if the drop down should be opened (Hovering or clicking inside of the drop down)
+  // moveToNext is used to move focus to the next element when deleting using key, minor UX improvement
   const [hasFocus] = useHasFocus(wrapperRef);
   const [moveToNext, blur] = useTrackFocus();
+
+  // Intersection observer for infinite scroll
+  const obsRef = useRef<HTMLDivElement>(null);
 
   // Throttle the search to prevent too many requests
   const throttled = useCallback(
     throttle(async (search) => {
-      const [err, data] = await to(
-        load(characterService.fetchCharacter(search))
-      );
-
-      if (err) throw err;
-      setChars(data || []);
+      fetch(characterService.fetchCharacter(search, 1));
     }, 400),
     []
   );
 
+  // Handle selection of characters
   const onSelectionChanged = (e: { id: string; add: boolean }) => {
     if (e.add) {
       setSelected([...selected, chars.find((char) => char.id === e.id)!]);
@@ -41,6 +54,7 @@ export const DropDown = () => {
     }
   };
 
+  // Handle drop down open/close
   useEffect(() => {
     setIsDropOpened(hasFocus);
 
@@ -50,6 +64,7 @@ export const DropDown = () => {
     }
   }, [hasFocus]);
 
+  // Fetch new data when search changes
   useEffect(() => {
     // Throttle the search to prevent too many requests
     throttled(search);
@@ -60,14 +75,40 @@ export const DropDown = () => {
     const onBlurHandler = () => {
       setIsDropOpened(false);
     };
-    window.addEventListener("blur", onBlurHandler);
 
+    window.addEventListener("blur", onBlurHandler);
     return () => {
-      window.removeEventListener("pause", onBlurHandler);
+      window.removeEventListener("blur", onBlurHandler);
     };
   }, []);
 
-  // Setup focus tracking
+  // Intersection observer for infinite scroll
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (characterService.nextPage && entries[0].isIntersecting) {
+          fetchMore(
+            characterService.fetchCharacter(
+              search,
+              characterService.currentPage + 1
+            )
+          );
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (obsRef.current) {
+      obs.observe(obsRef.current);
+    }
+
+    return () => {
+      if (obsRef.current) obs.unobserve(obsRef.current!);
+      obs.disconnect();
+    };
+  }, [obsRef]);
+
+  // Render the drop down
   const dropDownCss = isDropOpened ? css.opened : css.closed;
   const hasData = chars.length > 0;
 
@@ -75,7 +116,7 @@ export const DropDown = () => {
     <div className={css.section} ref={wrapperRef}>
       <SearchInput
         selectedItems={selected}
-        onKeyDown={() => {
+        onEnterPressed={() => {
           if (chars.length < 3 && chars.length > 0) {
             // Add/Remove first item for convenience
             const first = chars[0];
@@ -93,8 +134,14 @@ export const DropDown = () => {
       />
 
       <div className={[css.drop_down_wrapper, dropDownCss].join(" ")}>
-        <WaitingComponent isLoading={isLoading} error={error} hasData={hasData}>
-          {chars.map((char) => {
+        {error || isLoading || !hasData ? (
+          <WaitingComponent
+            isLoading={isLoading}
+            error={error}
+            hasData={hasData}
+          />
+        ) : (
+          chars.map((char) => {
             return (
               <CharacterTile
                 search={search}
@@ -104,8 +151,14 @@ export const DropDown = () => {
                 selected={selected.some((c) => c.id === char.id)}
               />
             );
-          })}
-        </WaitingComponent>
+          })
+        )}
+        {isFetchingMore && (
+          <div className="w-full flex py-4 justify-center">
+            <div className="animate-spin border-ricky-200 border-l-2 border-t-2 h-10 w-10 rounded-full"></div>
+          </div>
+        )}
+        <div ref={obsRef}></div>
       </div>
     </div>
   );

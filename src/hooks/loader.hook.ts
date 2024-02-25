@@ -1,30 +1,46 @@
 import { useState } from "react";
 import { ExpectedError, logService } from "../logic";
 
-export const useLoading = () => {
+export const useInfiniteLoader = <T>() => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const [data, setData] = useState<T[]>([]);
 
-  const load = async <T>(promise: Promise<T>): Promise<T | undefined> => {
+  const errorHandler = (err: any) => {
+    if (err instanceof ExpectedError) {
+      setError(err as Error);
+    } else {
+      // This will trigger the error in async function calls => we can catch the error in the global error boundary
+      setError(() => {
+        throw err;
+      });
+    }
+  };
+
+  const fetch = async (promise: Promise<T[]>) => {
     setIsLoading(true);
     try {
       const result = await promise;
-      setIsLoading(false);
-      return result;
+      setData(result);
     } catch (err) {
-      logService.logError(err);
-      if (err instanceof ExpectedError) {
-        setError(err as Error);
-      } else {
-        // This will trigger the error in async function calls => we can catch the error in the global error boundary
-        setError(() => {
-          throw err;
-        });
-      }
+      errorHandler(err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return [isLoading, error, load] as const;
+  const fetchMore = async (promise: Promise<T[]>) => {
+    setIsFetchingMore(true);
+    try {
+      const result = await promise;
+      setData((prev) => [...prev, ...result]);
+    } catch (err) {
+      errorHandler(err);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
+
+  return { isLoading, isFetchingMore, error, data, fetch, fetchMore } as const;
 };

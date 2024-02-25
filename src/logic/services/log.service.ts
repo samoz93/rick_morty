@@ -1,7 +1,8 @@
 import { ExpectedError } from "../models";
+
+// Fake logging service
 class LogService {
   logError(error: unknown) {
-    // TODO: Send error to server
     if (error instanceof ExpectedError) {
       console.error("ExpectedError", error.originalError);
     } else {

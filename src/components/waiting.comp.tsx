@@ -1,15 +1,13 @@
 import { useCallback } from "react";
 
-const WaitingComponent = ({
+export const WaitingComponent = ({
   isLoading,
   error,
   hasData,
-  children,
 }: {
   isLoading: boolean;
   error: any;
   hasData: boolean;
-  children: React.ReactNode;
 }) => {
   const getWaitingText = useCallback(() => {
     if (isLoading) {
@@ -33,17 +31,9 @@ const WaitingComponent = ({
   const { img, text } = getWaitingText();
 
   return (
-    <>
-      {isLoading || error || !hasData ? (
-        <div className="flex items-center flex-col justify-evenly h-[30rem]">
-          <img src={img} alt="Mr. Meeseeks" className="h-1/2 rounded-3xl" />
-          <p>{text}</p>
-        </div>
-      ) : (
-        children
-      )}
-    </>
+    <div className="flex items-center flex-col justify-evenly h-full">
+      <img src={img} alt="Mr. Meeseeks" className="h-1/2 rounded-3xl" />
+      <p>{text}</p>
+    </div>
   );
 };
-
-export default WaitingComponent;

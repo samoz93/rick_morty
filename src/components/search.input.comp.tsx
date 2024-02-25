@@ -8,13 +8,13 @@ export const SearchInput = ({
   onSearchChanged,
   selectedItems,
   onItemRemoved,
-  onKeyDown,
+  onEnterPressed,
 }: {
   dropDownIsActive: boolean;
   onSearchChanged: (search: string) => void;
   selectedItems: { id: string; name: string }[];
   onItemRemoved: (id: string) => void;
-  onKeyDown: (search: string) => void;
+  onEnterPressed: (search: string) => void;
 }) => {
   const [search, setSearch] = useState<string>("");
 
@@ -28,19 +28,17 @@ export const SearchInput = ({
     <div className={[css.search, inputCss].join(" ")}>
       <input
         type="text"
+        autoComplete="off"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
         }}
         onKeyDown={(e) => {
-          console.log(e.key);
-
           if (e.key === "Enter") {
-            onKeyDown(search);
+            onEnterPressed(search);
           }
         }}
         placeholder="Search.."
-        id="myInput"
         className="w-full p-2 h-full"
       />
       <div className={css.search_chips}>

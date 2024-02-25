@@ -6,6 +6,10 @@ export const useTrackFocus = (
   boundHtml?: HTMLElement | null,
   trackableElements = ["input", "button"]
 ) => {
+  const moveToNext = (dir: IDir = 1) => {
+    findNextTabStop(document.activeElement, dir).focus();
+  };
+
   const findNextTabStop = (el: Element | null, dir: IDir) => {
     var universe = (boundHtml || document).querySelectorAll(
       trackableElements.join(", ")
@@ -47,14 +51,10 @@ export const useTrackFocus = (
     };
   });
 
-  const moveToNext = (dir: IDir = 1) => {
-    findNextTabStop(document.activeElement, dir).focus();
-  };
-
-  const blurAll = () => {
+  const blur = () => {
     // @ts-ignore
     document.activeElement?.blur();
   };
 
-  return [moveToNext, blurAll];
+  return [moveToNext, blur];
 };
