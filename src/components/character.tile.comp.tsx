@@ -83,9 +83,9 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
             <AnimatePresence>
               {selected && (
                 <motion.img
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0 }}
+                  initial={{ scale: 0 }}
+                  animate={{ opacity: 1, scale: 1.1 }}
+                  exit={{ scale: 0 }}
                   src="portal.png"
                 />
               )}
