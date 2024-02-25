@@ -1,4 +1,5 @@
 import React from "react";
+import { CONFIG } from "../config";
 
 export const ErrorComponents = ({
   error,
@@ -7,8 +8,7 @@ export const ErrorComponents = ({
   error: any;
   children: React.ReactNode;
 }) => {
-  const isDev = false; //process.env.NODE_ENV === "development";
-  console.log("error", error, isDev);
+  const isDev = CONFIG.isDev;
 
   return (
     <div className="flex flex-col justify-center h-full w-full gap-10">

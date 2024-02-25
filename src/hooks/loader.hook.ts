@@ -1,6 +1,5 @@
-import { useCallback, useState } from "react";
-import { logService } from "../logic/services/log.service";
-import { ExpectedError } from "../logic/models";
+import { useState } from "react";
+import { ExpectedError, logService } from "../logic";
 
 export const useLoading = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

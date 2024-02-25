@@ -1,2 +1,2 @@
-export * from "./click.outside.hook";
+export * from "./client.focus.hook";
 export * from "./track.focus.hook";

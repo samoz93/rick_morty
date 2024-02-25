@@ -30,16 +30,14 @@ const WaitingComponent = ({
     };
   }, [isLoading, error]);
 
+  const { img, text } = getWaitingText();
+
   return (
     <>
       {isLoading || error || !hasData ? (
         <div className="flex items-center flex-col justify-evenly h-[30rem]">
-          <img
-            src={getWaitingText().img}
-            alt="Mr. Meeseeks"
-            className="h-1/2 rounded-3xl"
-          />
-          <p>{getWaitingText().text}</p>
+          <img src={img} alt="Mr. Meeseeks" className="h-1/2 rounded-3xl" />
+          <p>{text}</p>
         </div>
       ) : (
         children

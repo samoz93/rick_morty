@@ -1,6 +1,6 @@
 import { throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useOutsideAlerter, useTrackFocus } from "../hooks";
+import { useHasFocus, useTrackFocus } from "../hooks";
 import { useLoading } from "../hooks/loader.hook";
 import { characterService } from "../logic/services";
 import { ICharacter } from "../types";
@@ -16,8 +16,11 @@ export const DropDown = () => {
   const [selected, setSelected] = useState<ICharacter[]>([]);
   const [isDropOpened, setIsDropOpened] = useState<boolean>(true);
   const [isLoading, error, load] = useLoading();
-  const hasData = chars.length > 0;
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [hasFocus] = useHasFocus(wrapperRef);
+  const [moveToNext, blur] = useTrackFocus();
 
+  // Throttle the search to prevent too many requests
   const throttled = useCallback(
     throttle(async (search) => {
       const [err, data] = await to(
@@ -30,7 +33,7 @@ export const DropDown = () => {
     []
   );
 
-  const onChanged = (e: { id: string; isSelected: boolean }) => {
+  const onSelectionChanged = (e: { id: string; isSelected: boolean }) => {
     if (e.isSelected) {
       setSelected([...selected, chars.find((char) => char.id === e.id)!]);
     } else {
@@ -38,39 +41,35 @@ export const DropDown = () => {
     }
   };
 
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [hasFocus] = useOutsideAlerter(wrapperRef);
+  useEffect(() => {
+    setIsDropOpened(hasFocus);
 
-  // useEffect(() => {
-  //   setIsDropOpened(hasFocus);
-
-  //   // When drop down is closed, blur all elements to prevent focus trap and unwanted keyboard events
-  //   if (!hasFocus) {
-  //     blur();
-  //   }
-  // }, [hasFocus]);
+    // When drop down is closed, blur all elements to prevent focus trap and unwanted keyboard events
+    if (!hasFocus) {
+      blur();
+    }
+  }, [hasFocus]);
 
   useEffect(() => {
     // Throttle the search to prevent too many requests
     throttled(search);
   }, [search]);
 
+  // Close the drop down when the window is blurred
+  useEffect(() => {
+    const onBlurHandler = () => {
+      setIsDropOpened(false);
+    };
+    window.addEventListener("blur", onBlurHandler);
+
+    return () => {
+      window.removeEventListener("pause", onBlurHandler);
+    };
+  }, []);
+
   // Setup focus tracking
-  const [moveToNext, blur] = useTrackFocus();
-
   const dropDownCss = isDropOpened ? css.opened : css.closed;
-
-  console.log("isDropOpened", isLoading);
-
-  const getWaitingText = useCallback(() => {
-    if (isLoading) {
-      return "Look at m1! I am Mr. Meeseeks, I am searching the characters for you!";
-    }
-    if (!!error) {
-      return "Oh Jeez!, Something bad happened, try again later";
-    }
-    return "No characters found";
-  }, [isLoading, error]);
+  const hasData = chars.length > 0;
 
   return (
     <div className={css.section} ref={wrapperRef}>
@@ -78,6 +77,7 @@ export const DropDown = () => {
         selectedItems={selected}
         onItemRemoved={(id) => {
           setSelected(selected.filter((char) => char.id !== id));
+          // Move focus to the next element when deleting using key, minor UX improvement
           moveToNext();
         }}
         onSearchChanged={setSearch}
@@ -90,7 +90,7 @@ export const DropDown = () => {
             return (
               <CharacterTile
                 search={search}
-                onCharacterClick={onChanged}
+                onCharacterClick={onSelectionChanged}
                 character={char}
                 key={char.id}
                 selected={selected.some((c) => c.id === char.id)}

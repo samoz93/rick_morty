@@ -4,6 +4,9 @@
   &:has(.checkbox_input:focus) {
     @apply bg-ricky-100/10;
   }
+  &:last-child {
+    @apply border-b-0;
+  }
 }
 
 .checkbox {

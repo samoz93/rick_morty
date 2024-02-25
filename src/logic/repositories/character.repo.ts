@@ -18,6 +18,7 @@ class CharactersRepo {
     });
 
     if (data.errors?.length) {
+      // TODO: better parsing of errors
       throw new ExpectedError(data.errors[0].message, data.errors);
     }
 

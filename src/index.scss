@@ -2,32 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  h1 {
-    @apply text-2xl;
-  }
-  h2 {
-    @apply text-xl;
-  }
-  h3 {
-    @apply text-lg;
-  }
-  h3 {
-    @apply text-base;
-  }
-  h4 {
-    @apply text-sm;
-  }
-  h5 {
-    @apply text-xs;
-  }
-  p {
-    @apply text-xs;
-  }
-  button {
-    @apply bg-ricky-100 text-black font-bold p-2 px-4 mx-auto rounded;
-  }
-}
+@import "./styles/global.scss";
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -60,9 +35,4 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.ricky_color_filter {
-  filter: invert(98%) sepia(67%) saturate(1089%) hue-rotate(18deg)
-    brightness(85%) contrast(84%);
 }
