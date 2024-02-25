@@ -2,6 +2,10 @@
 
 This project is a simple dropdown menu featuring characters from the popular TV show Rick and Morty.
 
+## live preview
+
+[Preview](https://rick-morty-theta-jet.vercel.app)
+
 ## Getting Started
 
 To get a local copy up and running, follow these simple steps.
