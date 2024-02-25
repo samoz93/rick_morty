@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect, useState } from "react";
 
 export const useHasFocus = (ref: MutableRefObject<HTMLElement | null>) => {
-  const [hasFocus, setHasFocus] = useState<boolean>(true);
+  const [hasFocus, setHasFocus] = useState<boolean>(false);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const isClickOutside =
