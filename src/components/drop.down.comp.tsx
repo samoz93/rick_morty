@@ -134,7 +134,6 @@ export const DropDown = () => {
     <div className={css.section} ref={wrapperRef}>
       <SearchInput
         selectedItems={selected}
-        isSearching={isLoading}
         onEnterPressed={() => {
           if (chars.length < 3 && chars.length > 0) {
             // Add/Remove first item for convenience

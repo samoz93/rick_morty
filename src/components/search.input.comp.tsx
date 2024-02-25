@@ -10,14 +10,12 @@ export const SearchInput = ({
   selectedItems,
   onItemRemoved,
   onEnterPressed,
-  isSearching,
 }: {
   dropDownIsActive: boolean;
   onSearchChanged: (search: string) => void;
   selectedItems: { id: string; name: string }[];
   onItemRemoved: (id: string) => void;
   onEnterPressed: (search: string) => void;
-  isSearching: boolean;
 }) => {
   const [search, setSearch] = useState<string>("");
 
