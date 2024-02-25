@@ -57,7 +57,15 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
             />
           </dialog>
         )}
-        <div
+        <motion.div
+          whileInView={{ scale: 1 }}
+          initial={{ scale: 0.8 }}
+          viewport={{ amount: 0.9, once: true }}
+          transition={{
+            duration: 0.8,
+            type: "spring",
+            bounce: 0.4,
+          }}
           ref={ref}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -106,7 +114,7 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
             </h2>
             <h3>{character.episode.length} Episodes</h3>
           </div>
-        </div>
+        </motion.div>
       </>
     );
   }
