@@ -88,11 +88,14 @@ export const DropDown = () => {
       (entries) => {
         if (characterService.nextPage && entries[0].isIntersecting) {
           fetchMore(
-            characterService.fetchCharacter(search, characterService.nextPage)
+            characterService.fetchCharacter(
+              search,
+              characterService.currentPage + 1
+            )
           );
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.01 }
     );
 
     if (obsRef.current) {

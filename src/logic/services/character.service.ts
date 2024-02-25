@@ -10,6 +10,7 @@ class CharacterService {
   constructor() {}
 
   private pageInfo: IPageInfo | null = null;
+  currentPage = 1;
 
   async fetchCharacter(name: string, page = 1): Promise<ICharacter[]> {
     const [err, data] = await to(
@@ -23,6 +24,7 @@ class CharacterService {
 
     const { results, info } = data!;
 
+    this.currentPage = page;
     this.pageInfo = info;
     return results || [];
   }
