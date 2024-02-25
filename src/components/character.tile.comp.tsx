@@ -20,7 +20,7 @@ export const CharacterTile = ({
   const [isSelected, setIsSelected] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
 
-  const reg = new RegExp(search ?? "", "gi");
+  const reg = new RegExp(search?.trim() ?? "", "gi");
   const characterName = character.name.replace(
     reg,
     (match) => `<strong>${match}</strong>`
