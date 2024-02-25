@@ -7,7 +7,10 @@ import { ICharacter } from "../types";
 import { CharacterTile } from "./character.tile.comp";
 import css from "./dropdown.module.scss";
 import { SearchInput } from "./search.input.comp";
-import { WaitingComponent } from "./waiting.comp";
+import { SimpleSpinner } from "./simple.spinner";
+import { DataFetchingErrorComp } from "./data.fetching.error.comp";
+import { motion } from "framer-motion";
+import { LoaderLine } from "./loader.line";
 
 export const DropDown = () => {
   // Handle infinite scroll data + new search input
@@ -87,6 +90,14 @@ export const DropDown = () => {
   useEffect(() => {
     const obs = new IntersectionObserver(
       async (entries) => {
+        console.log(
+          entries[0].isIntersecting,
+          characterService.nextPage,
+          entries,
+          fetching,
+          "obs"
+        );
+
         if (
           characterService.nextPage &&
           entries[0].isIntersecting &&
@@ -123,6 +134,7 @@ export const DropDown = () => {
     <div className={css.section} ref={wrapperRef}>
       <SearchInput
         selectedItems={selected}
+        isSearching={isLoading}
         onEnterPressed={() => {
           if (chars.length < 3 && chars.length > 0) {
             // Add/Remove first item for convenience
@@ -139,10 +151,10 @@ export const DropDown = () => {
         onSearchChanged={setSearch}
         dropDownIsActive={isDropOpened}
       />
-
-      <div className={[css.drop_down_wrapper, dropDownCss].join(" ")}>
-        {error || isLoading || !hasData ? (
-          <WaitingComponent
+      <LoaderLine hidden={!isLoading} />
+      <motion.div className={[css.drop_down_wrapper, dropDownCss].join(" ")}>
+        {error || !hasData ? (
+          <DataFetchingErrorComp
             isLoading={isLoading}
             error={error}
             hasData={hasData}
@@ -160,13 +172,9 @@ export const DropDown = () => {
             );
           })
         )}
-        {isFetchingMore && (
-          <div className="w-full flex py-4 justify-center">
-            <div className="animate-spin border-ricky-200 border-l-2 border-t-2 h-10 w-10 rounded-full"></div>
-          </div>
-        )}
-        <div ref={obsRef}></div>
-      </div>
+        {isFetchingMore && <SimpleSpinner />}
+        <div className="h-10" ref={obsRef}></div>
+      </motion.div>
     </div>
   );
 };

@@ -1,0 +1,31 @@
+.loader_line {
+  width: 90%;
+  height: 3px;
+  @apply relative overflow-hidden bg-white/100 rounded-full my-1 mx-auto opacity-100;
+  transition: all 0.3s ease-in-out;
+}
+
+.loader_line:before {
+  content: "";
+  @apply absolute left-[-50%] h-[3px] w-[40%] rounded-full bg-ricky-100;
+  animation: lineAnim 1s linear infinite;
+}
+
+.loader_line.hidden {
+  @apply opacity-0;
+  transition: all 0.3s ease-in-out;
+}
+
+@keyframes lineAnim {
+  0% {
+    left: -40%;
+  }
+  50% {
+    left: 20%;
+    width: 80%;
+  }
+  100% {
+    left: 100%;
+    width: 100%;
+  }
+}

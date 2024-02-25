@@ -2,6 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CharacterChip } from "./character.chip.comp";
 import css from "./search.input.module.scss";
+import { motion } from "framer-motion";
 
 export const SearchInput = ({
   dropDownIsActive,
@@ -9,12 +10,14 @@ export const SearchInput = ({
   selectedItems,
   onItemRemoved,
   onEnterPressed,
+  isSearching,
 }: {
   dropDownIsActive: boolean;
   onSearchChanged: (search: string) => void;
   selectedItems: { id: string; name: string }[];
   onItemRemoved: (id: string) => void;
   onEnterPressed: (search: string) => void;
+  isSearching: boolean;
 }) => {
   const [search, setSearch] = useState<string>("");
 

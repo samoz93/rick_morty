@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-export const WaitingComponent = ({
+export const DataFetchingErrorComp = ({
   isLoading,
   error,
   hasData,
