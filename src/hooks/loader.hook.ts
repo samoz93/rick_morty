@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExpectedError, logService } from "../logic";
+import { ExpectedError } from "../logic";
 
 export const useInfiniteLoader = <T>() => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,6 +20,7 @@ export const useInfiniteLoader = <T>() => {
 
   const fetch = async (promise: Promise<T[]>) => {
     setIsLoading(true);
+
     try {
       const result = await promise;
       setData(result);

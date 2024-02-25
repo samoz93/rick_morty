@@ -11,6 +11,7 @@ import {
 import SanitizedHTML from "react-sanitized-html";
 import { ICharacter } from "../types";
 import css from "./character.tile.module.scss";
+import { highlightSearch } from "../logic/utils";
 
 type CharacterTileProps = {
   character: ICharacter;
@@ -20,16 +21,12 @@ type CharacterTileProps = {
 };
 export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
   ({ character, onCharacterClick, search, selected }, ref) => {
-    const [isSelected, setIsSelected] = useState(false);
+    const [isSelected, setIsSelected] = useState(selected);
     const [fullScreen, setFullScreen] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     // Highlight the search term
-    const reg = new RegExp(search?.trim() ?? "", "gi");
-    const characterName = character.name.replace(
-      reg,
-      (match) => `<strong>${match}</strong>`
-    );
+    const characterName = highlightSearch(character.name, search);
 
     const handleClick = () => {
       onCharacterClick?.({ id: character.id, add: !isSelected });
@@ -56,7 +53,7 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
         {fullScreen && (
           <dialog
             onClick={() => setFullScreen(false)}
-            className="absolute top-0 left-0 h-full w-full flex justify-evenly flex-col  items-center z-10 bg-ricky-200/10 backdrop-blur-md"
+            className="absolute top-0 text-white left-0 h-full w-full flex justify-evenly flex-col  items-center z-10 bg-ricky-200/10 backdrop-blur-md"
             open={fullScreen}
           >
             <h1>{character.name}</h1>

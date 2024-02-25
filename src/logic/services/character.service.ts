@@ -9,10 +9,8 @@ class CharacterService {
 
   constructor() {}
 
-  testing: ICharacter[] = [];
-  pageInfo: IPageInfo | null = null;
-
-  currentPage = 1;
+  private pageInfo: IPageInfo | null = null;
+  private currentPage = 1;
 
   async fetchCharacter(name: string, page = 1): Promise<ICharacter[]> {
     const [err, data] = await to(
