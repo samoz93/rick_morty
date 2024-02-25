@@ -83,16 +83,23 @@ export const DropDown = () => {
   }, []);
 
   // Intersection observer for infinite scroll
+  let fetching = false;
   useEffect(() => {
     const obs = new IntersectionObserver(
-      (entries) => {
-        if (characterService.nextPage && entries[0].isIntersecting) {
-          fetchMore(
+      async (entries) => {
+        if (
+          characterService.nextPage &&
+          entries[0].isIntersecting &&
+          !fetching
+        ) {
+          fetching = true;
+          await fetchMore(
             characterService.fetchCharacter(
               search,
               characterService.currentPage + 1
             )
           );
+          fetching = false;
         }
       },
       { threshold: 0.01 }
