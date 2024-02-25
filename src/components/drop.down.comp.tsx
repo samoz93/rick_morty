@@ -14,7 +14,7 @@ export const DropDown = () => {
   const [chars, setChars] = useState<ICharacter[]>([]);
   const [search, setSearch] = useState<string>("");
   const [selected, setSelected] = useState<ICharacter[]>([]);
-  const [isDropOpened, setIsDropOpened] = useState<boolean>(true);
+  const [isDropOpened, setIsDropOpened] = useState<boolean>(false);
   const [isLoading, error, load] = useLoading();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [hasFocus] = useHasFocus(wrapperRef);
