@@ -22,6 +22,7 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
   ({ character, onCharacterClick, search, selected }, ref) => {
     const [isSelected, setIsSelected] = useState(false);
     const [fullScreen, setFullScreen] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // Highlight the search term
     const reg = new RegExp(search?.trim() ?? "", "gi");
@@ -33,6 +34,8 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
     const handleClick = () => {
       onCharacterClick?.({ id: character.id, add: !isSelected });
       setIsSelected((selected) => !selected);
+      // Correct tracking of the input focus
+      inputRef.current?.focus();
     };
 
     // Handle dialog opening and closing
@@ -75,7 +78,11 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
           onClick={handleClick}
         >
           <div className={css.checkbox}>
-            <input type="checkbox" className={css.checkbox_input} />
+            <input
+              type="checkbox"
+              className={css.checkbox_input}
+              ref={inputRef}
+            />
             <AnimatePresence>
               {selected && (
                 <motion.img

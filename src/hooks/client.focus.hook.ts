@@ -3,6 +3,7 @@ import { MutableRefObject, useEffect, useState } from "react";
 export const useHasFocus = (ref: MutableRefObject<HTMLElement | null>) => {
   const [hasFocus, setHasFocus] = useState<boolean>(false);
   useEffect(() => {
+    // Probably I don't need this, as mouseener/exit is enough, but why not!
     function handleClickOutside(event: MouseEvent) {
       const isClickOutside =
         ref.current && !ref!.current?.contains(event.target as Node);
