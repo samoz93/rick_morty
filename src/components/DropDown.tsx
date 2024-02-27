@@ -1,14 +1,12 @@
 import { omit, throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CharacterTile, DataFetchingErrorComp, SearchInput } from ".";
 import { useHasFocus, useTrackFocus } from "../hooks";
 import { useInfiniteLoader } from "../hooks/loader.hook";
 import { characterService } from "../logic/services";
 import { ICharacter } from "../types";
-import { CharacterTile } from "./character.tile.comp";
+import css from "./DropDown.module.scss";
 import { LoaderLine, LoaderSpinner } from "./common";
-import { DataFetchingErrorComp } from "./data.fetching.error.comp";
-import css from "./dropdown.module.scss";
-import { SearchInput } from "./search.input.comp";
 
 export const DropDown = () => {
   // Handle infinite scroll data + new search input

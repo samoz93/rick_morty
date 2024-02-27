@@ -5,7 +5,7 @@ import SanitizedHTML from "react-sanitized-html";
 import { TRANSITION_CONSTANTS } from "../constants";
 import { highlightSearch } from "../logic/utils";
 import { ICharacter } from "../types";
-import css from "./character.tile.module.scss";
+import css from "./CharacterTile.module.scss";
 
 type CharacterTileProps = {
   character: ICharacter;

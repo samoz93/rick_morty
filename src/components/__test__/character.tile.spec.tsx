@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
+import { CharacterTile } from "..";
 import { ICharacter } from "../../types";
-import { CharacterTile } from "../character.tile.comp";
 
 const mockCharacter: ICharacter = {
   id: "1",

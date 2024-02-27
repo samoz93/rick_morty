@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, test, vi } from "vitest";
 import { ICharacter } from "../../types";
-import { SearchInput } from "../search.input.comp"; // Import your component
+import { SearchInput } from "../SearchInput";
 
 const mockSelectedItems = {
   "1": { id: "1", name: "Item 1" },

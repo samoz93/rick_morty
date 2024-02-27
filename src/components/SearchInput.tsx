@@ -1,8 +1,9 @@
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ICharacter } from "../types";
-import { CharacterChip } from "./character.chip.comp";
-import css from "./search.input.module.scss";
+import { CharacterChip } from "./CharacterChip";
+import css from "./SearchInput.module.scss";
+
 export const SearchInput = ({
   dropDownIsActive,
   onSearchChanged,

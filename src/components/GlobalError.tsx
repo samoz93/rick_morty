@@ -1,7 +1,7 @@
 import React from "react";
 import { CONFIG } from "../config";
 
-export const ErrorComponents = ({
+export const GlobalErrorComponent = ({
   error,
   children,
 }: {

@@ -1,5 +1,5 @@
 import "./App.scss";
-import { DropDown } from "./components/drop.down.comp";
+import { DropDown } from "./components";
 
 function App() {
   return (

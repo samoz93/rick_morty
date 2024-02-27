@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
-import { CharacterChip } from "../character.chip.comp";
+import { CharacterChip } from "..";
 
 describe("CharacterChip", () => {
   test("renders CharacterChip component", () => {
