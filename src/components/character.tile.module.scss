@@ -1,5 +1,5 @@
 .main {
-  @apply hover:bg-ricky-100/10 flex gap-4 max-h-28 items-center justify-start p-4 border-b-2 border-ricky overflow-hidden;
+  @apply hover:bg-ricky-100/10 flex gap-4 max-h-28 items-center justify-start p-4 border-b-2 border-ricky overflow-hidden cursor-pointer;
   transition: background-color 0.3s ease-in-out;
   &:has(.checkbox_input:focus) {
     @apply bg-ricky-100/10;

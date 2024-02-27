@@ -1,21 +1,7 @@
 import { useCallback } from "react";
 
-export const DataFetchingErrorComp = ({
-  isLoading,
-  error,
-  hasData,
-}: {
-  isLoading: boolean;
-  error: any;
-  hasData: boolean;
-}) => {
+export const DataFetchingErrorComp = ({ error }: { error: any }) => {
   const getWaitingText = useCallback(() => {
-    if (isLoading) {
-      return {
-        text: "Look at m1! I am Mr. Meeseeks, I am searching the characters for you!",
-        img: "Mr._Meeseeks.png",
-      };
-    }
     if (!!error) {
       return {
         text: "Something bad happened, try again later!",
@@ -26,7 +12,7 @@ export const DataFetchingErrorComp = ({
       text: "AWWWWWWW!, I can't find this character!",
       img: "angry.png",
     };
-  }, [isLoading, error]);
+  }, [error]);
 
   const { img, text } = getWaitingText();
 

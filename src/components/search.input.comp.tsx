@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { ICharacter } from "../types";
 import { CharacterChip } from "./character.chip.comp";
 import css from "./search.input.module.scss";
 export const SearchInput = ({
@@ -11,7 +12,7 @@ export const SearchInput = ({
 }: {
   dropDownIsActive: boolean;
   onSearchChanged: (search: string) => void;
-  selectedItems: { id: string; name: string }[];
+  selectedItems: Record<string, ICharacter>;
   onItemRemoved: (id: string) => void;
   onEnterPressed: (search: string) => void;
 }) => {
@@ -42,7 +43,7 @@ export const SearchInput = ({
       />
       <div className={css.search_chips}>
         <AnimatePresence>
-          {selectedItems.map((char) => {
+          {Object.values(selectedItems).map((char) => {
             return (
               <CharacterChip
                 id={char.id}

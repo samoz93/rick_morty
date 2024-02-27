@@ -1,4 +1,4 @@
-import { throttle } from "lodash";
+import { omit, throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHasFocus, useTrackFocus } from "../hooks";
 import { useInfiniteLoader } from "../hooks/loader.hook";
@@ -9,7 +9,7 @@ import { DataFetchingErrorComp } from "./data.fetching.error.comp";
 import css from "./dropdown.module.scss";
 import { LoaderLine } from "./loader.line";
 import { SearchInput } from "./search.input.comp";
-import { SimpleSpinner } from "./simple.spinner";
+import { LoaderSpinner } from "./simple.spinner";
 
 export const DropDown = () => {
   // Handle infinite scroll data + new search input
@@ -26,7 +26,7 @@ export const DropDown = () => {
 
   // Component state
   const [search, setSearch] = useState<string>("");
-  const [selected, setSelected] = useState<ICharacter[]>([]);
+  const [selected, setSelected] = useState<Record<string, ICharacter>>({});
   const [isDropOpened, setIsDropOpened] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,9 +51,15 @@ export const DropDown = () => {
   // Handle selection of characters
   const onSelectionChanged = (e: { id: string; add: boolean }) => {
     if (e.add) {
-      setSelected([chars.find((char) => char.id === e.id)!, ...selected]);
+      setSelected({
+        ...selected,
+        [e.id]: chars.find((char) => char.id === e.id)!,
+      });
     } else {
-      setSelected(selected.filter((char) => char.id !== e.id));
+      setSelected((old) => {
+        const newSelected = omit(old, e.id);
+        return newSelected;
+      });
     }
   };
 
@@ -134,7 +140,7 @@ export const DropDown = () => {
           if (chars.length < 3 && chars.length > 0) {
             // Add/Remove first item for convenience
             const first = chars[0];
-            const isSelected = selected.some((char) => char.id === first.id);
+            const isSelected = !!selected[first.id];
             onSelectionChanged({ id: first.id, add: !isSelected });
           }
         }}
@@ -152,11 +158,7 @@ export const DropDown = () => {
         className={[css.drop_down_wrapper, dropDownCss].join(" ")}
       >
         {error || !hasData ? (
-          <DataFetchingErrorComp
-            isLoading={isLoading}
-            error={error}
-            hasData={hasData}
-          />
+          <DataFetchingErrorComp error={error} />
         ) : (
           chars.map((char) => {
             return (
@@ -165,12 +167,12 @@ export const DropDown = () => {
                 onCharacterClick={onSelectionChanged}
                 character={char}
                 key={char.id}
-                selected={selected.some((c) => c.id === char.id)}
+                selected={!!selected[char.id]}
               />
             );
           })
         )}
-        {isFetchingMore && <SimpleSpinner />}
+        {isFetchingMore && <LoaderSpinner />}
         <div className="h-10" ref={obsRef}></div>
       </div>
     </div>
