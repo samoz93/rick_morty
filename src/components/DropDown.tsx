@@ -80,9 +80,9 @@ export const DropDown = () => {
     });
   }, [search]);
 
-  // Intersection observer for infinite scroll
-  let fetching = false;
   useEffect(() => {
+    // Intersection observer for infinite scroll
+    let fetching = false;
     const obs = new IntersectionObserver(
       async (entries) => {
         if (
