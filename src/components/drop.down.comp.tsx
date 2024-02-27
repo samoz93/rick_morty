@@ -5,11 +5,10 @@ import { useInfiniteLoader } from "../hooks/loader.hook";
 import { characterService } from "../logic/services";
 import { ICharacter } from "../types";
 import { CharacterTile } from "./character.tile.comp";
+import { LoaderLine, LoaderSpinner } from "./common";
 import { DataFetchingErrorComp } from "./data.fetching.error.comp";
 import css from "./dropdown.module.scss";
-import { LoaderLine } from "./loader.line";
 import { SearchInput } from "./search.input.comp";
-import { LoaderSpinner } from "./simple.spinner";
 
 export const DropDown = () => {
   // Handle infinite scroll data + new search input
@@ -82,18 +81,6 @@ export const DropDown = () => {
       behavior: "smooth",
     });
   }, [search]);
-
-  // Close the drop down when the window is blurred
-  useEffect(() => {
-    const onBlurHandler = () => {
-      setIsDropOpened(false);
-    };
-
-    window.addEventListener("blur", onBlurHandler);
-    return () => {
-      window.removeEventListener("blur", onBlurHandler);
-    };
-  }, []);
 
   // Intersection observer for infinite scroll
   let fetching = false;
