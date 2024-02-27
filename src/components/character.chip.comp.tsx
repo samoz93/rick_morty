@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { TRANSITION_CONSTANTS } from "../constants";
 
 export const CharacterChip = ({
   name,
@@ -16,7 +15,6 @@ export const CharacterChip = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={TRANSITION_CONSTANTS}
     >
       <p className="text-black">{name}</p>
       <button

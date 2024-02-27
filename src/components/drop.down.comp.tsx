@@ -27,7 +27,7 @@ export const DropDown = () => {
   // Component state
   const [search, setSearch] = useState<string>("");
   const [selected, setSelected] = useState<ICharacter[]>([]);
-  const [isDropOpened, setIsDropOpened] = useState<boolean>(true);
+  const [isDropOpened, setIsDropOpened] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
