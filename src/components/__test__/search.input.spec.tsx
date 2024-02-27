@@ -1,11 +1,12 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { expect, test, vi } from "vitest";
+import { ICharacter } from "../../types";
 import { SearchInput } from "../search.input.comp"; // Import your component
-import { afterEach, describe, expect, it, vi, test } from "vitest";
 
-const mockSelectedItems = [
-  { id: "1", name: "Item 1" },
-  { id: "2", name: "Item 2" },
-];
+const mockSelectedItems = {
+  "1": { id: "1", name: "Item 1" },
+  "2": { id: "2", name: "Item 2" },
+} as unknown as Record<string, ICharacter>;
 
 test("renders SearchInput component", async () => {
   const mockOnSearchChanged = vi.fn();
@@ -27,7 +28,7 @@ test("renders SearchInput component", async () => {
   expect(inputElement).toBeInTheDocument();
 
   // Assert that the selected items are rendered as chips
-  mockSelectedItems.forEach((item) => {
+  Object.values(mockSelectedItems).forEach((item) => {
     const chipElement = screen.getByText(item.name);
     expect(chipElement).toBeInTheDocument();
   });

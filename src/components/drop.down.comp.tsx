@@ -157,7 +157,7 @@ export const DropDown = () => {
         ref={scrollRef}
         className={[css.drop_down_wrapper, dropDownCss].join(" ")}
       >
-        {error || !hasData ? (
+        {error || (!isLoading && !hasData) ? (
           <DataFetchingErrorComp error={error} />
         ) : (
           chars.map((char) => {

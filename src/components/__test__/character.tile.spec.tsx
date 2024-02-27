@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { CharacterTile } from "../character.tile.comp"; // Import your component
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 import { ICharacter } from "../../types";
-import { afterEach, describe, expect, it, vi, test } from "vitest";
+import { CharacterTile } from "../character.tile.comp"; // Import your component
 
 const mockCharacter: ICharacter = {
   id: "1",

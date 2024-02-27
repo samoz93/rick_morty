@@ -98,6 +98,7 @@ export const CharacterTile = forwardRef<HTMLDivElement, CharacterTileProps>(
                 e.stopPropagation();
                 setFullScreen(true);
               }}
+              height="7rem"
               className="h-full object-contain rounded-3xl"
               src={character.image}
               alt={character.name}
