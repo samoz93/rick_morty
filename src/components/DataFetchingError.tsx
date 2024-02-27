@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-export const DataFetchingErrorComp = ({ error }: { error: any }) => {
+export const DataFetchingError = ({ error }: { error: any }) => {
   const getWaitingText = useCallback(() => {
     if (!!error) {
       return {

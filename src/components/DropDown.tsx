@@ -1,6 +1,6 @@
 import { omit, throttle } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CharacterTile, DataFetchingErrorComp, SearchInput } from ".";
+import { CharacterTile, DataFetchingError, SearchInput } from ".";
 import { useHasFocus, useTrackFocus } from "../hooks";
 import { useInfiniteLoader } from "../hooks/loader.hook";
 import { characterService } from "../logic/services";
@@ -143,7 +143,7 @@ export const DropDown = () => {
         className={[css.drop_down_wrapper, dropDownCss].join(" ")}
       >
         {error || (!isLoading && !hasData) ? (
-          <DataFetchingErrorComp error={error} />
+          <DataFetchingError error={error} />
         ) : (
           chars.map((char) => {
             return (
